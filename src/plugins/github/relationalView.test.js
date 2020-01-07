@@ -1,5 +1,6 @@
 // @flow
 
+import {NodeAddress} from "../../core/graph";
 import * as R from "./relationalView";
 import * as N from "./nodes";
 import {exampleRepository, exampleRelationalView} from "./example/example";
@@ -387,6 +388,22 @@ describe("plugins/github/relationalView", () => {
       const view1 = R.RelationalView.fromJSON(json1);
       const json2 = view1.toJSON();
       expect(json1).toEqual(json2);
+    });
+  });
+
+  describe("urlReferenceMap", () => {
+    it("should match example snapshot", () => {
+      // Given
+      const rv = exampleRelationalView();
+
+      // When
+      const map = rv.urlReferenceMap();
+
+      // Then
+      const noNullsMap = MapUtil.mapValues(map, (_, v) =>
+        NodeAddress.toParts(v)
+      );
+      expect(noNullsMap).toMatchSnapshot();
     });
   });
 

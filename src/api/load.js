@@ -17,6 +17,10 @@ import {type PluginDeclaration} from "../analysis/pluginDeclaration";
 import * as NullUtil from "../util/null";
 import {nodeContractions} from "../plugins/identity/nodeContractions";
 
+import {loadInitiativesFile} from "../plugins/initiatives/initiativesFile";
+import {createGraph as createInitiativesGraph} from "../plugins/initiatives/createGraph";
+import {CascadingReferenceDetector} from "../core/references";
+
 export type LoadOptions = {|
   +project: Project,
   +params: ?$Shape<TimelineCredParameters>,
@@ -76,12 +80,25 @@ export async function load(
     }
   }
 
+  function initiativesGraph(): ?Promise<Graph> {
+    if (project.initiatives) {
+      return loadInitiativesFile(project.initiatives.configPath).then(
+        (repo) => {
+          const refs = new CascadingReferenceDetector([]);
+          console.log(repo.initiatives());
+          return createInitiativesGraph(repo, refs);
+        }
+      );
+    }
+  }
+
   // For each plugin that wants to provide a Graph, get a Promise for the
   // graph. That way we can request them in parallel, via Promise.all, rather
   // than blocking on the plugins sequentially.
   // Since plugins often perform rate-limited IO, this may be a big performance
   // improvement.
   const pluginGraphPromises: Promise<Graph>[] = NullUtil.filterList([
+    initiativesGraph(),
     discourseGraph(),
     githubGraph(),
   ]);

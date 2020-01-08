@@ -1,0 +1,49 @@
+[
+  {
+    "type": "sourcecred/project",
+    "version": "0.5.0"
+  },
+  {
+    "discourseServer": {
+      "serverUrl": "https://discourse.sourcecred.io"
+    },
+    "initiatives": {
+      "configPath": "./example-initiatives.yaml"
+    },
+    "id": "@sourcecred",
+    "identities": [
+      {"username": "decentralion", "aliases": ["github/decentralion", "discourse/decentralion"]},
+      {"username": "Beanow", "aliases": ["github/Beanow", "discourse/Beanow", "discourse/beanow"]},
+      {"username": "BrianLitwin", "aliases": ["github/BrianLitwin", "discourse/brianlitwin"]},
+      {"username": "mzargham", "aliases": ["github/mzargham", "discourse/mzargham"]},
+      {"username": "s_ben", "aliases": ["github/s-ben", "discourse/s_ben"]},
+      {"username": "ryanMorton", "aliases": ["github/mortonanalytics", "discourse/ryanMorton"]},
+      {"username": "ericronne", "aliases": ["github/ericronne", "discourse/ericronne"]},
+      {"username": "zixuanzh", "aliases": ["github/zixuanzh", "discourse/zixuanzh"]},
+      {"username": "wchargin", "aliases": ["github/wchargin", "discourse/wchargin"]},
+      {"username": "nayafia", "aliases": ["github/nayafia", "discourse/nayafia"]}
+    ],
+    "repoIds": [
+      {
+        "name": "sourcecred",
+        "owner": "sourcecred"
+      },
+      {
+        "name": "widgets",
+        "owner": "sourcecred"
+      },
+      {
+        "name": "research",
+        "owner": "sourcecred"
+      },
+      {
+        "name": "payouts",
+        "owner": "sourcecred"
+      },
+      {
+        "name": "cred",
+        "owner": "sourcecred"
+      }
+    ]
+  }
+]

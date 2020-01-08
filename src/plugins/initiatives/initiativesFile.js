@@ -1,6 +1,7 @@
 // @flow
 
 import fs from "fs-extra";
+import {parse as parseYaml} from "yaml";
 import {NodeAddress, type NodeAddressT} from "../../core/graph";
 import {fromCompat, type Compatible} from "../../util/compat";
 import type {Initiative, URL, InitiativeRepository} from "./initiative";
@@ -40,9 +41,15 @@ function mapToInitiatives(
   const initiatives = [];
   for (const entryId in initiativesFile) {
     const addr = trackerAddress(entryId);
+    const i = initiativesFile[entryId];
     initiatives.push({
-      ...initiativesFile[entryId],
+      ...i,
       tracker: addr,
+      // Allow nulls to mean empty array. For prettier YAML.
+      dependencies: i.dependencies || [],
+      references: i.references || [],
+      contributions: i.contributions || [],
+      champions: i.champions || [],
     });
   }
   return initiatives;
@@ -51,10 +58,10 @@ function mapToInitiatives(
 export async function loadInitiativesFile(
   path: string
 ): Promise<InitiativeRepository> {
-  const compatJSON = await fs.readFile(path, "utf-8");
+  const compatYAML = await fs.readFile(path, "utf-8");
   try {
     // TODO: would make sense to use tcomb to validate.
-    const initiativesFile = fromJSON(JSON.parse(compatJSON));
+    const initiativesFile = fromJSON(parseYaml(compatYAML));
     const initiatives = mapToInitiatives(initiativesFile);
     const repo: InitiativeRepository = {
       initiatives: () => initiatives,
